@@ -325,14 +325,19 @@ input = """\
 ###.##...#.#............#....#.
 .....#...#........##.........#.""".split('\n')
 
-slope = (3, 1)
-
 def is_tree(x, y):
     return input[y][x % len(input[0])] == '#'
 
-trees = x = y = 0
-for i, _ in enumerate(input):
-    trees += is_tree(x, y)
-    x += slope[0]
-    y += slope[1]
-print(trees)
+def num_trees(dx, dy):
+    trees = x = y = 0
+    for y in range(0, len(input), dy):
+        trees += is_tree(x, y)
+        x += dx
+    return trees
+
+print(num_trees(3, 1))
+
+prod = 1
+for dx, dy in ((1, 1), (3, 1), (5, 1), (7, 1), (1, 2)):
+    prod *= num_trees(dx, dy)
+print(prod)
