@@ -1140,14 +1140,49 @@ hcl:#fffffd ecl:brn
 ecl:brn eyr:2026 iyr:2017 hgt:75in
 pid:745302991 byr:1969 hcl:#7394c7"""
 
+import re
+
 mandatory = set(('byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'))
 
 def part1():
     valid = 0
     for pp in input.split('\n\n'):
         fields = set(f.split(':')[0] for f in pp.split())
-        if (fields & mandatory) == mandatory:
+        if fields & mandatory == mandatory:
             valid += 1
     return valid
 
-print(part1())
+def part2():
+    valid = 0
+    for pp in input.split('\n\n'):
+        fields = dict(f.split(':') for f in pp.split())
+        keys = set(fields.keys())
+        if keys & mandatory != mandatory:
+            continue
+        try:
+            if not (1920 <= int(fields['byr']) <= 2002) \
+            or not (2010 <= int(fields['iyr']) <= 2020) \
+            or not (2020 <= int(fields['eyr']) <= 2030):
+                continue
+            hgt = fields['hgt']
+            if hgt.endswith('cm'):
+                if not (150 <= int(hgt[:-2]) <= 193):
+                    continue
+            elif hgt.endswith('in'):
+                if not (59 <= int(hgt[:-2]) <= 76):
+                    continue
+            else:
+                continue
+            if not re.match(r'^#[0-9a-f]{6}$', fields['hcl']):
+                continue
+            if fields['ecl'] not in ('amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'):
+                continue
+            if not re.match(r'^\d{9}$', fields['pid']):
+                continue
+
+            valid += 1
+        except ValueError:
+            pass
+    return valid
+
+print(part2())
