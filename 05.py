@@ -872,10 +872,20 @@ def generate_table(nbits, lower_half, upper_half):
 ROWS = generate_table(7, 'F', 'B')
 COLS = generate_table(3, 'L', 'R')
 
+del generate_table
+
+
+def seat_id(bp):
+    return ROWS[bp[:7]] * 8 + COLS[bp[7:]]
+
 def part1():
-    def seat(bp):
-        return ROWS[bp[:7]] * 8 + COLS[bp[7:]]
+    return max(seat_id(bp) for bp in input.split())
 
-    return max(seat(bp) for bp in input.split())
-
-print(part1())
+def part2():
+    all_seats = [seat_id(bp) for bp in input.split()]
+    empty_seats = set(range(max(all_seats))) - set(all_seats)
+    for e in empty_seats:
+        if e + 1 in all_seats and e - 1 in all_seats:
+            return e
+    
+print(part2())
