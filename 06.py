@@ -2240,9 +2240,20 @@ fcelpwgamhnquzbsrtdxivjk
 tdjwzsaqhxunkfcvpbrmgil
 """
 
+from functools import reduce
+from operator import and_
+
 def part1():
-    return sum(len(set(group.replace('\n', '')))
+    return sum(
+        len(set(group.replace('\n', '')))
+        for group in input.split('\n\n')
+    )
+
+def part2():
+    return sum(
+        len(reduce(and_, [set(l) for l in group.split()]))
         for group in input.split('\n\n')
     )
 
 print(part1())
+print(part2())
