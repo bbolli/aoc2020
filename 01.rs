@@ -1,26 +1,7 @@
-use std::{
-    fs::File,
-    io::{prelude::*, BufReader},
-    path::Path,
-};
-
-fn lines_from_file(filename: impl AsRef<Path>) -> Vec<String> {
-    let file = File::open(filename).expect("no such file");
-    let buf = BufReader::new(file);
-    buf.lines()
-        .map(|l| l.expect("Could not parse line"))
-        .collect()
-}
-
-fn lines_as_numbers(lines: Vec<String>) -> Vec<i32> {
-    lines.iter().filter_map(|l| l.parse::<i32>().ok()).collect()
-}
-
-// ---
+mod aoc;
 
 fn main() {
-    let lines = lines_from_file("01.in");
-    let numbers = lines_as_numbers(lines);
+    let numbers = aoc::numbers_from_file("01.in");
 
     'outer1: for a in &numbers {
         for b in &numbers {
