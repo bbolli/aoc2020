@@ -13,10 +13,12 @@ pub fn lines_from_file(filename: impl AsRef<Path>) -> Vec<String> {
         .collect()
 }
 
-pub fn lines_as_numbers(lines: Vec<String>) -> Vec<i32> {
+#[allow(dead_code)]
+fn lines_as_numbers(lines: Vec<String>) -> Vec<i32> {
     lines.iter().filter_map(|l| l.parse::<i32>().ok()).collect()
 }
 
+#[allow(dead_code)]
 pub fn numbers_from_file(filename: impl AsRef<Path>) -> Vec<i32> {
     lines_as_numbers(lines_from_file(filename))
 }
